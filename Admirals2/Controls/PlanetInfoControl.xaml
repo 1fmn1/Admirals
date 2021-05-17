@@ -1,0 +1,169 @@
+﻿<UserControl x:Class="PlanetInfoControl"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Admirals2"
+      mc:Ignorable="d" 
+      d:DesignHeight="455" d:DesignWidth="200" MinWidth="200" MinHeight="350" MaxWidth="200">
+    <UserControl.Resources>
+        <local:MyImageNameConverter x:Key="MyClanConverter" />
+        <local:MyClanRectConverter x:Key="MyClanRectConverter" />
+        <local:MyClanSolidColorConverter x:Key="MyClanSolidColorConverter" />
+        <local:MyShipImageConverter x:Key="MyShipImageConverter"/>
+    </UserControl.Resources>
+    <Border Margin="0" Padding="0" Height="455" Width="200"
+          BorderBrush="#FF686868" BorderThickness="2"  CornerRadius="6"
+          VerticalAlignment="Top">
+        <StackPanel Background="black" Height="454" Width="200" Margin="0,0">
+            <Canvas Height="115">
+                <Rectangle Name="ShipHolder" Stroke="White"  Fill="{Binding image, Converter={StaticResource MyClanConverter}}" Canvas.Left="49" Width="100" Height="100" RenderTransformOrigin="4.95,0.5"/>
+                <Rectangle Name="ClanHolder" Stroke="White"  Fill="{Binding clan_id, Converter={StaticResource MyClanConverter}}" Canvas.Left="49" Width="30" Canvas.Top="10" RenderTransformOrigin="0.486,0.5" Height="30"/>
+                <TextBlock Name="txtPlanetName" Text="{Binding name}"  DockPanel.Dock="Bottom" Foreground="{Binding clan_id, Converter={StaticResource MyClanSolidColorConverter}}" FontWeight="Bold" FontSize="16" TextAlignment="Center" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="180" Height="22" Canvas.Top="90" Canvas.Left="10">
+                <TextBlock.Effect>
+                    <DropShadowEffect
+      ShadowDepth="4"
+      Direction="330"
+      Color="Black"
+      Opacity="0.5"
+     BlurRadius="4"/>
+                </TextBlock.Effect>
+                </TextBlock>
+                <TextBlock Width="20" Name="txtMembers" Canvas.Left="29" Canvas.Top="74"/>
+            </Canvas>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100*"></ColumnDefinition>
+                    <ColumnDefinition Width="7*"></ColumnDefinition>
+                    <ColumnDefinition Width="93*"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <TabControl MinHeight="231" Margin="0,0" Height="335">
+                <TabItem>
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <Image Source="pack://application:,,,/Style/Ship.png"  Height="24" Width="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-9,-11"/>
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <StackPanel MinHeight="189" VerticalAlignment="Top">
+                        <!--<TextBlock FontSize="10" Margin="15,0,0,0">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}Team {0}/{1}">
+                                    <Binding Path= "members_count" />
+                                    <Binding Path="capacity" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>-->
+                        <Grid Margin="0,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Name = "Leave" Grid.Column="1" Height="24" VerticalAlignment="Top">
+                                <Button.ContentTemplate>
+                                    <DataTemplate>
+                                        <Image Source="pack://application:,,,/Style/exit.png"  Height="24" Width="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </Button.ContentTemplate>
+                            </Button>
+                            <Button Name = "Enter" Grid.Column="2" Margin="5,0">
+                                <Button.ContentTemplate>
+                                    <DataTemplate>
+                                        <Image Source="pack://application:,,,/Style/Enter.png"  Height="24" Width="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </Button.ContentTemplate>
+                            </Button>
+                            <Button Name = "Build" Grid.Column="3">
+                                <Button.ContentTemplate>
+                                    <DataTemplate>
+                                        <Image Source="pack://application:,,,/Style/construct.png"  Height="24" Width="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </Button.ContentTemplate>
+                            </Button>
+                        </Grid>
+                        <TextBlock Foreground="#FFE6D6AA" Text="Ships:"/>
+                        <ListBox ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" Name="lstShips" HorizontalAlignment="Center" VerticalAlignment="Center" Width="175" MaxHeight="150" Background="#FF1A1A1D">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Grid.Column="0"  Source="{Binding image,Converter={StaticResource MyShipImageConverter}}"/>
+                                        <Rectangle Width="13" Height="13" Grid.Column="0" Fill="{Binding clan_id,Converter={StaticResource MyClanConverter}}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding name}" Foreground="{Binding clan_id,Converter={StaticResource MyClanSolidColorConverter}}" FontSize="11" FontWeight="Bold">
+                                        <TextBlock.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextDecorations"
+                                                            Value="Strikethrough"/>
+                                                <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding destroyed_by_id}"
+                                                                     Value="0">
+                                                        <Setter Property="TextDecorations"
+                                                                    Value="" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Resources>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <TextBlock Foreground="#FFE6D6AA" Text="Citizens:"/>
+                        <ListBox  ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" MaxHeight="110" Name="lstTeam" HorizontalAlignment="Center" VerticalAlignment="Center" Width="175" Background="#FF1A1A1D">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding name}" Foreground="{Binding clan_id,Converter={StaticResource MyClanSolidColorConverter}}" FontSize="11" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </TabItem>
+                <TabItem>
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <Image Source="pack://application:,,,/Style/build.png"  Height="24" Width="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-9,-11"/>
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <StackPanel>
+                        <TextBlock Foreground="#FFE6D6AA" Height="20" Text="  Buildings"/>
+                        <ListBox ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" Name="lstBuildings" HorizontalAlignment="Center" VerticalAlignment="Center" Width="175" Background="#FF1A1A1D">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Width="13" Height="13" Grid.Column="0" Fill="{Binding clan_id,Converter={StaticResource MyClanSolidColorConverter}}" OpacityMask="{Binding image,Converter={StaticResource MyClanConverter}}"/>
+                                        <Rectangle Width="13" Height="13" Grid.Column="0" Fill="{Binding clan_id,Converter={StaticResource MyClanConverter}}"/>
+                                        <!--<Image Grid.Column="0"  Source="{Binding clan_id,Converter={StaticResource MyClanConverter}}"/>-->
+                                        <!--<Image Height="10" Width="10" Grid.Column="0"  Source="{Binding image,Converter={StaticResource MyClanConverter}}" Stretch="Uniform"/>-->
+                                        <TextBlock Grid.Column="1" Text="{Binding name}" Foreground="{Binding clan_id,Converter={StaticResource MyClanSolidColorConverter}}" FontSize="11" FontWeight="Bold">
+                                        <TextBlock.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextDecorations"
+                                                            Value=""/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding hitpoints}"
+                                                                     Value="0">
+                                                        <Setter Property="TextDecorations"
+                                                                    Value="Strikethrough" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Resources>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+    </Border>
+</UserControl>

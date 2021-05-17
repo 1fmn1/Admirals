@@ -1,0 +1,193 @@
+﻿<UserControl x:Class="ShopBControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Admirals2"
+             mc:Ignorable="d" 
+             d:DesignHeight="390" MaxHeight="390" MinWidth="330">
+    <UserControl.Resources>
+        <Style x:Key="TabControlStyle1" TargetType="{x:Type TabControl}">
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FFACACAC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid x:Name="templateRoot" ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="ColumnDefinition0"/>
+                                <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+                                <RowDefinition x:Name="RowDefinition1" Height="*"/>
+                            </Grid.RowDefinitions>
+                            <UniformGrid Columns="2" x:Name="HeaderPanel" Background="Transparent" Grid.Column="0" IsItemsHost="True" Margin="2,2,2,0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
+                            <!--<TabPanel x:Name="HeaderPanel" Background="Transparent" Grid.Column="0" IsItemsHost="True" Margin="2,2,2,0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>-->
+                            <Border x:Name="ContentPanel" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
+                                <ContentPresenter x:Name="PART_SelectedContentHost" ContentTemplate="{TemplateBinding SelectedContentTemplate}" Content="{TemplateBinding SelectedContent}" ContentStringFormat="{TemplateBinding SelectedContentStringFormat}" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="TabStripPlacement" Value="Bottom">
+                                <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="1"/>
+                                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="Auto"/>
+                                <Setter Property="Margin" TargetName="HeaderPanel" Value="2,0,2,2"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Left">
+                                <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+                                <Setter Property="Margin" TargetName="HeaderPanel" Value="2,2,0,2"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Right">
+                                <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="1"/>
+                                <Setter Property="Grid.Column" TargetName="ContentPanel" Value="0"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition0" Value="*"/>
+                                <Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+                                <Setter Property="Margin" TargetName="HeaderPanel" Value="0,2,2,2"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TextBoxStyle1" TargetType="{x:Type TextBox}" BasedOn="{x:Null}">
+            <Setter Property="Background" Value="{StaticResource ControlLightBackground}" />
+            <Setter Property="BorderBrush" Value="{StaticResource ControlBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="{StaticResource ControlForegroundWhite}" />
+            <Setter Property="CaretBrush" Value="{StaticResource ControlBackgroundOver}"/>
+            <Setter Property="AllowDrop" Value="True"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <ControlTemplate.Resources>
+                        </ControlTemplate.Resources>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28*"/>
+                                <RowDefinition Height="3*"/>
+                            </Grid.RowDefinitions>
+                            <Border x:Name="txb_mouseOver2" Background="{TemplateBinding Background}" Opacity="0" CornerRadius="4" Grid.RowSpan="2" />
+                            <Border x:Name="txb_mouseOver1" Background="{StaticResource ControlBackgroundLine}" Opacity="0" CornerRadius="4" Grid.RowSpan="2" />
+                            <Border x:Name="txb_border" Background="{TemplateBinding Background}" CornerRadius="4" 
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Grid.RowSpan="2">
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="0,0,-87,0" BorderBrush="{DynamicResource ControlBorderBrush}" Background="#FF2B2929"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" TargetName="txb_border" Value="{StaticResource DisabledBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                <Setter Property="Opacity" Value="0.85"/>
+                                <Setter TargetName="txb_border" Property="BorderBrush" Value="{StaticResource DisabledBrush}"/>
+                                <Setter TargetName="txb_border" Property="BorderThickness" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid Background="#FF333332">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border CornerRadius="6" Grid.Row="0" BorderThickness="2" BorderBrush="#FF686868">
+            <DockPanel LastChildFill="True" UseLayoutRounding="False">
+                <DockPanel  Margin="1" DockPanel.Dock="Top" Height="30">
+                    <DockPanel.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="#FF1F1F1F" Offset="1"/>
+                            <GradientStop Color="#FF333332" Offset="0.517"/>
+                            <GradientStop Color="#FF202020" Offset="0.009"/>
+                        </LinearGradientBrush>
+                    </DockPanel.Background>
+                    <TextBlock x:Name="txtCaption" DockPanel.Dock="Left" Margin="10,5,5,5" Foreground="#FFE6CA8C" FontWeight="Bold" FontSize="14" Text="Order building at"/>
+                    <Button Click="Button_Click" Margin ="0,0,10,0" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="15" Height="15" FontWeight="Bold" FontSize="14" FontFamily="Sitka Banner" Background="#FEFD0000">x</Button>
+                </DockPanel>
+                <TabControl Width="Auto" DockPanel.Dock="Bottom" TabStripPlacement="left" VerticalAlignment="Top" Height="307" Margin="0,0,0,0" Style="{DynamicResource TabControlStyle1}" IsTextSearchCaseSensitive="False" MaxHeight="307" >
+                    <TabItem x:Name="Headquarters" Header="1">
+                        <TabItem.HeaderTemplate>
+                            <DataTemplate>
+                                <Image Source="pack://application:,,,/Style/headquarters_1.png" Width="100" Height="70"  Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-9,-11" RenderTransformOrigin="0.5,0.5">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="90"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+
+                                </Image>
+                            </DataTemplate>
+                        </TabItem.HeaderTemplate>
+                        <Canvas Background="#FF333332">
+                            <Button Click="Button_Click_Confirm"  Content="Buy" Height="26" Canvas.Left="48" Canvas.Top="188" Width="50" Background="#FF38930E" FontSize="14" FontWeight="Bold"/>
+                            <TextBlock Canvas.Left="12" TextWrapping="Wrap" Text="Cost:" Canvas.Top="146" FontSize="14"/>
+                            <TextBox Name="txtPrice" Height="Auto" Canvas.Left="48" TextWrapping="Wrap" Text="1000" Canvas.Top="140" Width="4" Background="{x:Null}" FontSize="14" HorizontalContentAlignment="Center" Foreground="#FF27D32F" Style="{DynamicResource TextBoxStyle1}"/>
+                            <TextBlock Canvas.Left="12" Text="Is needed to control a planet."  TextWrapping="Wrap" Canvas.Top="78" Height="57" Width="123" Foreground="#FF49DED7"/>
+                            <TextBlock Canvas.Left="48" TextWrapping="Wrap" Text="{Binding (TabItem.Name), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}" Canvas.Top="52" FontSize="16" FontWeight="Bold" Foreground="#FF36C12F"/>
+
+                        </Canvas>
+                    </TabItem>
+                    <TabItem x:Name="Starport" Header="2">
+                        <TabItem.HeaderTemplate>
+                            <DataTemplate>
+                                <Image Source="pack://application:,,,/style/starport_1.png" Width="100" Height="70"  Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-9,-11" RenderTransformOrigin="0.5,0.5">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="90"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                </Image>
+                            </DataTemplate>
+                        </TabItem.HeaderTemplate>
+                        <Canvas Background="#FF333332">
+                            <Button Click="Button_Click_Confirm"  Content="Buy" Height="26" Canvas.Left="48" Canvas.Top="188" Width="50" Background="#FF38930E" FontSize="14" FontWeight="Bold"/>
+                            <TextBlock Canvas.Left="12" TextWrapping="Wrap" Text="Cost:" Canvas.Top="146" FontSize="14"/>
+                            <TextBox  Height="Auto" Canvas.Left="48" TextWrapping="Wrap" Text="5000" Canvas.Top="140" Width="4" Background="{x:Null}" FontSize="14" HorizontalContentAlignment="Center" Foreground="#FF27D32F" Style="{DynamicResource TextBoxStyle1}"/>
+                            <TextBlock Canvas.Left="12" Text="Is needed to make new spaceships."  TextWrapping="Wrap" Canvas.Top="78" Height="57" Width="123" Foreground="#FF49DED7"/>
+                            <TextBlock Canvas.Left="48" TextWrapping="Wrap" Text="{Binding (TabItem.Name), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}" Canvas.Top="52" FontSize="16" FontWeight="Bold" Foreground="#FF36C12F"/>
+
+                        </Canvas>
+                    </TabItem>
+                </TabControl>
+            </DockPanel>
+        </Border>
+        <Border Grid.Row="1" CornerRadius="6" BorderThickness="2" BorderBrush="#FF686868">
+            <Canvas>
+                <Button Content="Cancel" Canvas.Left="220" Canvas.Top="10" Width="75" Click="Button_Click" Height="20" FontSize="14" FontWeight="Bold"/>
+            </Canvas>
+        </Border>
+    </Grid>
+</UserControl>

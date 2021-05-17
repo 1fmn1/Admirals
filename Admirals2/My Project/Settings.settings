@@ -1,0 +1,36 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="Width" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1035</Value>
+    </Setting>
+    <Setting Name="Height" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">765</Value>
+    </Setting>
+    <Setting Name="Left" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">400</Value>
+    </Setting>
+    <Setting Name="Top" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">400</Value>
+    </Setting>
+    <Setting Name="GridLength0" Type="System.Windows.GridLength" Scope="User">
+      <Value Profile="(Default)">110*</Value>
+    </Setting>
+    <Setting Name="Gridlength2" Type="System.Windows.GridLength" Scope="User">
+      <Value Profile="(Default)">220*</Value>
+    </Setting>
+    <Setting Name="GridWidth0" Type="System.Windows.GridLength" Scope="User">
+      <Value Profile="(Default)">100*</Value>
+    </Setting>
+    <Setting Name="GridWidth2" Type="System.Windows.GridLength" Scope="User">
+      <Value Profile="(Default)">100*</Value>
+    </Setting>
+    <Setting Name="Zoom" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.6</Value>
+    </Setting>
+    <Setting Name="Offset" Type="System.Windows.Point" Scope="User">
+      <Value Profile="(Default)">-50,-50</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

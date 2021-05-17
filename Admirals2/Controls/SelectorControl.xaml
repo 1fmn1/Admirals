@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="SelectorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Admirals2"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="100" MaxHeight="100" MaxWidth="100">
+    <Canvas Margin="-50">
+        <Ellipse Name="EllipseSelect1" Width="100" Height="100" StrokeThickness="5" StrokeDashOffset="3"  StrokeDashArray="10,9">
+            <Ellipse.Stroke>
+                <SolidColorBrush Color="AliceBlue"/>
+            </Ellipse.Stroke>
+        </Ellipse>
+        <Ellipse Name="EllipseSelect2" Canvas.Left="-25" Canvas.Top="-25"  Width="150" Height="150" StrokeThickness="25" StrokeDashOffset="2.5"  StrokeDashArray="0.2,5">
+            <Ellipse.Stroke>
+                <SolidColorBrush Color="AliceBlue"/>
+            </Ellipse.Stroke>
+        </Ellipse>
+    </Canvas>
+</UserControl>

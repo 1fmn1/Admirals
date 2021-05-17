@@ -1,0 +1,668 @@
+﻿<Window x:Name="Galaxy" x:Class="Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:u="clr-namespace:Microsoft.Sample.Controls;assembly=VirtualCanvas"
+        xmlns:local="clr-namespace:Admirals2"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:util="clr-namespace:Admirals2"
+        xmlns:p="clr-namespace:Admirals2"
+        mc:Ignorable="d"
+        Height="{Binding Source={x:Static p:MySettings.Default}, Path=Height, Mode=TwoWay}"
+        Width="{Binding Source={x:Static p:MySettings.Default}, Path=Width, Mode=TwoWay}"
+        Left="{Binding Source={x:Static p:MySettings.Default}, Path=Left, Mode=TwoWay}"
+        Top="{Binding Source={x:Static p:MySettings.Default}, Path=Top, Mode=TwoWay}">
+    <!--Title=""  Height="756" Width="1035" WindowStyle="SingleBorderWindow" ResizeMode="CanResize" BorderThickness="0" BorderBrush="#FF686868">-->
+    <!--<Grid>
+        <Grid.Background>
+            <VisualBrush Stretch="Uniform" Visual="{Binding}"/>
+        </Grid.Background>
+    </Grid>-->
+    <Window.Resources>
+        <util:MyClanRectConverter x:Key="MyClanRectConverter" />
+        <local:MyShipImageConverter x:Key="MyShipImageConverter" />
+        <util:MyPlanetNameConverter x:Key="MyPlanetNameConverter" />
+        <util:MyStateConverter x:Key="MyStateConverter" />
+        <util:MyDateConverter x:Key="MyDateConverter" />
+        <util:MyShipIDConverter x:Key="MyShipIDConverter" />
+        <DataTemplate x:Key="OverlayIcon">
+            <Grid Width="20" Height="20">
+                <Ellipse Fill="Red"
+                        Stroke="White"
+                        StrokeThickness="2"/>
+
+                <TextBlock Text="{Binding}"
+                        TextAlignment="Center"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Height="16"
+                        VerticalAlignment="Center"
+                        FontSize="12">
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="0" />
+                    </TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF303030" Offset="0"/>
+            <GradientStop Color="#FF4E4E4C" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo />
+    </Window.TaskbarItemInfo>
+    <!--<Window.Template>
+        <ControlTemplate TargetType="Window">
+            <Grid>
+                <Border Width="auto" Height="auto" BorderBrush="Orange" BorderThickness="2" CornerRadius="20">
+                </Border>
+            </Grid>
+        </ControlTemplate>
+    </Window.Template>-->
+    <Grid Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" />
+            <!--<ColumnDefinition Width="{Binding Source={x:Static p:MySettings.Default}, Path=GridWidth0, Mode=TwoWay}" />-->
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="{Binding Source={x:Static p:MySettings.Default}, Path=GridWidth2, Mode=TwoWay}" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <GridSplitter Grid.Row="1" Grid.Column="1" ShowsPreview="False" Width="10" Panel.ZIndex="2"
+        HorizontalAlignment="Center" VerticalAlignment="Stretch">
+            <GridSplitter.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <LinearGradientBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                            <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                            <RotateTransform Angle="90" CenterY="0.5" CenterX="0.5"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </LinearGradientBrush.RelativeTransform>
+                    <GradientStop Color="Black" Offset="0.051"/>
+                    <GradientStop Color="#FF9B8C48" Offset="0.487"/>
+                    <GradientStop Color="Black" Offset="0.953"/>
+                </LinearGradientBrush>
+            </GridSplitter.Background>
+        </GridSplitter>
+        <Grid Name="SecondaryGrid" Grid.Column="0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{Binding Source={x:Static p:MySettings.Default}, Path=GridLength0, Mode=TwoWay}"/>
+            </Grid.RowDefinitions>
+
+            <TabControl  Grid.Column="0" Grid.Row="0">
+                <TabItem Header="">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Width="20" Height="20">
+                                <Image Source="Style/Human.png" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <DockPanel>
+                            <Grid DockPanel.Dock="Top"  Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="123*" />
+                                    <ColumnDefinition Width="175*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <TextBlock TextAlignment="Center">
+                                    Player
+                                </TextBlock>
+                                <ComboBox Name="BoxAdmirals" Grid.Column="1" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True"/>
+                                <TextBlock TextAlignment="Center" Grid.Row="1">
+                                    Clan
+                                </TextBlock>
+                                <TextBlock Grid.Row="2" TextAlignment="Center">
+                                    Health
+                                </TextBlock>
+                                <TextBlock Grid.Row="3" TextAlignment="Center">
+                                    Money
+                                </TextBlock>
+                                <TextBlock Grid.Row="4" TextAlignment="Center">
+                                    Location
+                                </TextBlock>
+                                <TextBlock Grid.Row="5" TextAlignment="Center">
+                                    State
+                                </TextBlock>
+                                <TextBlock Name="txtClan" TextAlignment="Center" Grid.Column="1" Grid.Row="1">
+                                    Clan
+                                </TextBlock>
+                                <ProgressBar Name="txtHealth" Grid.Row="2" Value="100" Grid.Column="1" Margin="0" VerticalAlignment="Center" Height="9">
+                                </ProgressBar>
+                                <TextBlock Name="txtMoney" Grid.Row="3" TextAlignment="Center" Grid.Column="1" Foreground="#FF3BF006">
+                                    Money
+                                </TextBlock>
+                                <TextBlock Name="txtLocation" Grid.Row="4" TextAlignment="Center" Grid.Column="1" Foreground="Aquamarine"  TextDecorations="Underline" FontWeight="Bold">
+                                    Location
+                                </TextBlock>
+                                <TextBlock  Text="{Binding state_time_string, UpdateSourceTrigger=PropertyChanged}" Name="txtState" Grid.Row="5" TextAlignment="Center" Grid.Column="1">
+                                </TextBlock>
+                            </Grid>
+                            <Grid DockPanel.Dock="Bottom">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <TabControl  Grid.Row="1">
+                                    <TabItem Header="">
+                                        <TabItem.HeaderTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Width="20" Height="20">
+                                                    <Image Source="Style/Ship.png" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </TabItem.HeaderTemplate>
+                                        <ListView x:Name="MyShipsView" ItemsSource="{Binding}" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                    IsSynchronizedWithCurrentItem="True" Panel.ZIndex="2"
+                  local:GridViewSort.AutoSort="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                            <ListView.View>
+                                                <GridView AllowsColumnReorder="False">
+                                                    <GridViewColumn Header="Type"
+                            util:GridViewSort.PropertyName="name" >
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image  Source="{Binding image, Converter={StaticResource MyShipImageConverter}}"  />
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="Name" Width="200"
+                            DisplayMemberBinding="{Binding name}"
+                            util:GridViewSort.PropertyName="name" />
+                                                    <GridViewColumn Header="ID"
+                            DisplayMemberBinding="{Binding id}"
+                            util:GridViewSort.PropertyName="id" Width="50" />
+                                                </GridView>
+                                            </ListView.View>
+
+                                        </ListView>
+                                    </TabItem>
+                                    <TabItem >
+                                        <TabItem.Header>
+                                            <StackPanel Height="20" Width="20">
+                                                <Image Source="Style/build.png"/>
+                                            </StackPanel>
+
+                                        </TabItem.Header>
+                                        <ListView x:Name="MyBuildingsView" ItemsSource="{Binding}" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                    IsSynchronizedWithCurrentItem="True" Panel.ZIndex="2"
+                  local:GridViewSort.AutoSort="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                            <ListView.View>
+                                                <GridView AllowsColumnReorder="False">
+                                                    <GridViewColumn Header="Type"
+                            util:GridViewSort.PropertyName="name" 
+                            DisplayMemberBinding="{Binding image}">
+
+                                                    </GridViewColumn>
+
+                                                    <GridViewColumn Header="Name" Width="200"
+                            DisplayMemberBinding="{Binding name}"
+                            util:GridViewSort.PropertyName="name" />
+                                                    <GridViewColumn Header="ID"
+                            DisplayMemberBinding="{Binding id}"
+                            util:GridViewSort.PropertyName="id" Width="50" />
+                                                </GridView>
+                                            </ListView.View>
+
+                                        </ListView>
+                                    </TabItem>
+                                    <TabItem >
+                                        <TabItem.Header>
+                                            <StackPanel Height="20" Width="20">
+                                                <Image Source="Style/human.png" />
+                                            </StackPanel>
+
+                                        </TabItem.Header>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Row="2">
+                                                <Expander Header="Respawn">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <ComboBox Name="BoxRespawn" Grid.Column="0" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" IsEditable="True"/>
+
+                                                        <Button  Grid.Column="1" Click="Button_Click">
+                                                            Respawn
+                                                        </Button>
+                                                    </Grid>
+                                                </Expander>
+
+                                                <Expander Header="Suicide">
+                                                    <Button Click="Button_Click">
+                                                        Die!
+                                                    </Button>
+                                                </Expander>
+                                            </StackPanel>
+                                        </Grid>
+                                    </TabItem>
+                                </TabControl>
+                            </Grid>
+                        </DockPanel>
+                        <!--<local:ShipInfoControl MinWidth="230" MaxWidth="250" Grid.Column="1" x:Name="ShipInfo" Margin="0,10,0,0"/>
+                        <local:PlanetInfoControl MinWidth="230" MaxWidth="250" Grid.Column="1" x:Name="PlanetInfo"  Margin="0,10,0,0" Padding="0"/>
+                        <local:BuildingInfoControl MinWidth="230" MaxWidth="250" Grid.Column="1" x:Name="BuildingInfo"  Margin="0,10,0,0" Padding="0"/>-->
+                    </Grid>
+                </TabItem>
+                <TabItem Header="">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Width="20" Height="20">
+                                <Image Source="Style/Ship.png" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <ListView x:Name="ShipsView" ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                    IsSynchronizedWithCurrentItem="True" Panel.ZIndex="2"
+                  local:GridViewSort.AutoSort="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="False">
+                                <GridViewColumn Header="Name"
+                            util:GridViewSort.PropertyName="name" >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image  Source="{Binding image, Converter={StaticResource MyShipImageConverter}}"  />
+                                                <TextBlock Margin="20,0,0,0" Text="{Binding name}"></TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="ID"
+                            DisplayMemberBinding="{Binding id}"
+                            util:GridViewSort.PropertyName="id" Width="50" />
+
+                                <GridViewColumn Header="Owner_ID"
+                            DisplayMemberBinding="{Binding owner_character_id}"
+                            util:GridViewSort.PropertyName="owner_character_id" />
+
+                                <GridViewColumn Header="State"
+                            DisplayMemberBinding="{Binding state, Converter={StaticResource MyStateConverter}}"
+                            util:GridViewSort.PropertyName="state" Width="50" />
+
+                                <GridViewColumn Header="Team"
+                            DisplayMemberBinding="{Binding members_count}"
+                            util:GridViewSort.PropertyName="members_count" Width="50" />
+
+                                <GridViewColumn Header="Planet"
+                            DisplayMemberBinding="{Binding planet_name}"
+                            util:GridViewSort.PropertyName="planet_name" />
+
+                                <GridViewColumn Header="X"
+                            DisplayMemberBinding="{Binding x, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:N}'}"
+                            util:GridViewSort.PropertyName="x" />
+
+                                <GridViewColumn Header="Y"
+                            DisplayMemberBinding="{Binding y, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:N}'}"
+                            util:GridViewSort.PropertyName="y" />
+
+                                <GridViewColumn Header="Target_X"              
+                            DisplayMemberBinding="{Binding target_x,UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:N}'}"
+                            util:GridViewSort.PropertyName="target_x" />
+
+                                <GridViewColumn Header="Target_Y"
+                            DisplayMemberBinding="{Binding target_y,UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:N}'}"
+                            util:GridViewSort.PropertyName="target_y" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </TabItem>
+                <TabItem Header="">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Width="20" Height="20">
+                                <Image Source="Style/fire.png" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <ListView x:Name="BattlesView" ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                    IsSynchronizedWithCurrentItem="True" Panel.ZIndex="2"
+                  local:GridViewSort.AutoSort="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="False">
+                                <GridViewColumn Header="ID"
+                            DisplayMemberBinding="{Binding id}"
+                            util:GridViewSort.PropertyName="id" Width="50" />
+                                <GridViewColumn Header="Name"
+                            DisplayMemberBinding="{Binding name}"
+                            util:GridViewSort.PropertyName="name" />
+                                <GridViewColumn Header="When"
+                            DisplayMemberBinding="{Binding timestart, Converter={StaticResource MyDateConverter}}"
+                            util:GridViewSort.PropertyName="timestart" Width="150" />
+                                <GridViewColumn Header="Attacker"
+                            util:GridViewSort.PropertyName="attacker_id" >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel DataContext="{Binding attacker_id, Converter={StaticResource MyShipIDConverter}}" Orientation="Horizontal">
+                                                <Image  Source="{Binding image, Converter={StaticResource MyShipImageConverter}}" />
+                                                <TextBlock Margin="20,0,0,0" Text="{Binding}"></TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </TabItem>
+                <TabItem Header="">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Width="20" Height="20">
+                                <Image Source="Style/Planet.png" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <ListView x:Name="PlanetsView" ItemsSource="{Binding}" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                    IsSynchronizedWithCurrentItem="True" Panel.ZIndex="2"
+                  local:GridViewSort.AutoSort="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="False">
+                                <GridViewColumn Header="Clan" util:GridViewSort.PropertyName="clan_id" >
+
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image  Source="{Binding clan_id, Converter={StaticResource MyClanRectConverter}}"  />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Name"
+                            DisplayMemberBinding="{Binding name}"
+                            util:GridViewSort.PropertyName="name" />
+                                <GridViewColumn Header="ID"
+                            DisplayMemberBinding="{Binding id}"
+                            util:GridViewSort.PropertyName="id" Width="50" />
+                                <GridViewColumn Header="Clan Name"
+                            DisplayMemberBinding="{Binding clan_id}"
+                            util:GridViewSort.PropertyName="clan_id" />
+                                <GridViewColumn Header="Citizens"
+                            DisplayMemberBinding="{Binding citizens_count}"
+                            util:GridViewSort.PropertyName="citizens_count" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </TabItem>
+                <TabItem Header="">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Width="20" Height="20">
+                                <Image Source="Style/Build.png" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <ListView x:Name="BuildingsView" ItemsSource="{Binding}" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center"
+                    IsSynchronizedWithCurrentItem="True" Panel.ZIndex="2"
+                  local:GridViewSort.AutoSort="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="False">
+                                <GridViewColumn Header="Clan" util:GridViewSort.PropertyName="clan_id" >
+
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate >
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image  Source="{Binding clan_id, Converter={StaticResource MyClanRectConverter}}"  />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Name"
+                            DisplayMemberBinding="{Binding name}"
+                            util:GridViewSort.PropertyName="name" />
+                                <GridViewColumn Header="ID"
+                            DisplayMemberBinding="{Binding id}"
+                            util:GridViewSort.PropertyName="id" Width="50" />
+                                <GridViewColumn Header="State"
+                            DisplayMemberBinding="{Binding state , Converter={StaticResource MyStateConverter}}"
+                            util:GridViewSort.PropertyName="state" />
+                                <GridViewColumn Header="Type"
+                            DisplayMemberBinding="{Binding image}"
+                            util:GridViewSort.PropertyName="image" />
+                                <GridViewColumn Header="Planet"
+                            DisplayMemberBinding="{Binding planet_id, Converter={StaticResource MyPlanetNameConverter}}"
+                            util:GridViewSort.PropertyName="planet_id" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </TabItem>
+                <TabItem Header="">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Width="20" Height="20">
+                                <Image Source="Style/script.png" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <ListView x:Name="ScriptsView" ItemsSource="{Binding}" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                    IsSynchronizedWithCurrentItem="True" Panel.ZIndex="2"
+                  local:GridViewSort.AutoSort="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Delete" Click="onSRemoveClick"></MenuItem>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="False">
+                                <GridViewColumn Header="Type"
+                            util:GridViewSort.PropertyName="name" >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image  Source="{Binding image, Converter={StaticResource MyShipImageConverter}}"  />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+
+                                </GridViewColumn>
+                                <GridViewColumn Header="Name"
+                            DisplayMemberBinding="{Binding name}"
+                            util:GridViewSort.PropertyName="name"  />
+                                <GridViewColumn Header="Script ID"
+                            DisplayMemberBinding="{Binding script_id}"
+                            util:GridViewSort.PropertyName="Script_id" Width="60" />
+                                <GridViewColumn Header="Mode"
+                            DisplayMemberBinding="{Binding Mode}"
+                            util:GridViewSort.PropertyName="Mode" Width="50" />
+                                <GridViewColumn Header="Target"
+                            DisplayMemberBinding="{Binding target_name}"
+                            util:GridViewSort.PropertyName="target_name" />
+                                <GridViewColumn Header="Admiral"
+                            DisplayMemberBinding="{Binding Admiral}"
+                            util:GridViewSort.PropertyName="Admiral" />
+                                <GridViewColumn Header="Next Script"
+                            util:GridViewSort.PropertyName="Admiral"  Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox SelectedValue="{Binding nextscript_id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                          ItemsSource="{Binding ElementName=ScriptsView, Path=Items}"
+                                                          DisplayMemberPath="script_id"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Working"
+                                           util:GridViewSort.PropertyName="Working">
+
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <CheckBox IsChecked="{Binding Working}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </TabItem>
+                <TabItem Visibility="Hidden" Header="">
+                    <TabItem.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Width="20" Height="20">
+                                <Image Source="Style/human.png" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </TabItem.HeaderTemplate>
+                    <ListView x:Name="PlayersView" ItemsSource="{Binding}" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                    IsSynchronizedWithCurrentItem="True" Panel.ZIndex="2" Visibility="Hidden"
+                  local:GridViewSort.AutoSort="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Delete" Click="onSRemoveClick"></MenuItem>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="False">
+                                <GridViewColumn Header="Type"
+                            util:GridViewSort.PropertyName="name" >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image  Source="{Binding image, Converter={StaticResource MyShipImageConverter}}"  />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+
+                                </GridViewColumn>
+                                <GridViewColumn Header="name"
+                            DisplayMemberBinding="{Binding name}"
+                            util:GridViewSort.PropertyName="name"  />
+                                <GridViewColumn Header="Mode"
+                            DisplayMemberBinding="{Binding Mode}"
+                            util:GridViewSort.PropertyName="Mode" Width="50" />
+                                <GridViewColumn Header="Target"
+                            DisplayMemberBinding="{Binding target_name}"
+                            util:GridViewSort.PropertyName="target_name" />
+                                <GridViewColumn Header="Admiral"
+                            DisplayMemberBinding="{Binding Admiral}"
+                            util:GridViewSort.PropertyName="Admiral" />
+                                <GridViewColumn Header="Working"
+                                           util:GridViewSort.PropertyName="Working">
+
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <CheckBox IsChecked="{Binding Working}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </TabItem>
+            </TabControl>
+
+        </Grid>
+        <DockPanel Grid.Row="1" Grid.Column="2">
+            <Menu IsMainMenu="True" DockPanel.Dock="Top" Grid.Column="2" HorizontalAlignment="Left">
+                <MenuItem Header="_View">
+                    <MenuItem Header="Save GW map" Click="MenuItem_Click"></MenuItem>
+                    <MenuItem Header="Load GW map" Click="MenuItem_Click"></MenuItem>
+                    <MenuItem Header="Live map" Click="MenuItem_Click"></MenuItem>
+                    <MenuItem Visibility="Collapsed" Header="Show Grid Lines" Click="OnShowGridLines" IsChecked="False"/>
+                    <MenuItem Header="_Zoom">
+                        <MenuItem Header="500%" Tag="500" Click="OnZoom"/>
+                        <MenuItem Header="200%" Tag="200" Click="OnZoom"/>
+                        <MenuItem Header="100%" Tag="100" Click="OnZoom"/>
+                        <MenuItem Header="75%" Tag="75" Click="OnZoom"/>
+                        <MenuItem Header="50%" Tag="50" Click="OnZoom"/>
+                        <MenuItem Header="25%" Tag="25" Click="OnZoom"/>
+                        <MenuItem Header="Fit" Tag="Fit" Click="OnZoom"/>
+
+                        <Slider Minimum=".01" Maximum="5" x:Name="ZoomSlider" Value="1" Width="200" Height="30" AutoToolTipPrecision="3" />
+                    </MenuItem>
+                    <MenuItem Header="_Exit" Click="ExitProgram"/>
+
+                </MenuItem>
+            </Menu>
+            <!--<StatusBar DockPanel.Dock="Bottom" Visibility="Hidden">
+            <StatusBarItem Width="200" HorizontalAlignment="Left">
+                <TextBlock x:Name="StatusText" Width="200">Status</TextBlock>
+            </StatusBarItem>
+            <StatusBarItem Width="500" HorizontalAlignment="Left">
+                <Grid Width="500">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" >
+                        <Rectangle Fill="Green" x:Name="Created" Height="5" Width="0" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="CreatedLabel" FontSize="9"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="2">
+                        <Rectangle Fill="Red" x:Name="Destroyed" Height="5" Width="0"  HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="DestroyedLabel" FontSize="9"></TextBlock>
+                    </StackPanel>
+                </Grid>
+            </StatusBarItem>
+        </StatusBar>-->
+            <Canvas Name="MainCanvas">
+                <ScrollViewer x:Name="Scroller" HorizontalScrollBarVisibility="Visible" 
+                  VerticalScrollBarVisibility="Visible" CanContentScroll="True" Grid.Column="2" Focusable="False">
+                    <u:VirtualCanvas Cursor="Cross" x:Name="Graph" Grid.Column="2" Width="{Binding ElementName=MainCanvas, Path=ActualWidth}" 
+                                      Height="{Binding ElementName=MainCanvas, Path=ActualHeight}">
+                    </u:VirtualCanvas>
+                </ScrollViewer>
+                <local:ShipInfoControl  MinWidth="200" MaxWidth="250" Grid.Column="1" x:Name="ShipInfo" Margin="0,0,0,0"
+                                        Canvas.Bottom="0" Canvas.Left="0"/>
+                <local:PlanetInfoControl MinWidth="200" MaxWidth="250" Grid.Column="1" x:Name="PlanetInfo"  Margin="0,0,0,0" Padding="0"
+                                         Canvas.Bottom="0" Canvas.Left="0"/>
+                <local:BuildingInfoControl MinWidth="200" MaxWidth="250" Grid.Column="1" x:Name="BuildingInfo"  Margin="0,0,0,0" Padding="0"
+                                           Canvas.Bottom="0" Canvas.Left="0"/>
+                <local:BattleInfoControl MinWidth="200" MaxWidth="250" Grid.Column="1" x:Name="BattleInfo"  Margin="0,0,0,0" Padding="0"
+                                           Canvas.Bottom="0" Canvas.Left="0"/>
+                <Border Canvas.Top="0" Canvas.Left="0"  Width="{Binding ElementName=MainCanvas, Path=ActualWidth}" Height="400"  Name="txtlog2" BorderThickness="0,0,0,1" BorderBrush="#FF686868">
+                    <Border.Background>
+                        <SolidColorBrush Color="Black" Opacity="0.305"/>
+                    </Border.Background>
+                    <TextBlock Name="txtLog" Foreground="#FFE6D6AA" TextWrapping="Wrap">
+                    <Run>Galaxy log.</Run>
+                    </TextBlock>
+                </Border>
+            </Canvas>
+        </DockPanel>
+    </Grid>
+</Window>
